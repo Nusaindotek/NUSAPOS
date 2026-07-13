@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NUSAPOS - Dashboard</title>
+  <style>
+    body { font-family: Arial; background: #f0f2f5; padding: 20px; }
+    h1 { color: #2196F3; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .menu-btn { padding: 25px; background: white; border-radius: 12px; text-align: center; 
+                font-size: 18px; font-weight: bold; text-decoration: none; color: #333; 
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .menu-btn:hover { background: #2196F3; color: white; }
+  </style>
+</head>
+<body>
+  <h1>NUSAPOS</h1>
+  <div class="grid" id="menuGrid">
+    <!-- Tombol akan muncul otomatis dari database -->
+  </div>
+
+<script>
+let db;
+indexedDB.open("NusaPOS", 1).onsuccess = e => { 
+  db = e.target.result; 
+  loadMenu(); 
+}
+
+function loadMenu(){
+  const tx = db.transaction("menu","readonly");
+  const store = tx.objectStore("menu");
+  store.getAll().onsuccess = e => {
+    const menus = e.target.result;
+    document.getElementById("menuGrid").innerHTML = menus.map(m => 
+      `<a href="${m.link}" class="menu-btn">${m.icon} <br>${m.nama}</a>`
+    ).join("");
+  }
+}
+</script>
+</body>
+</html>
