@@ -22,7 +22,7 @@
      padding: 25px 20px;
      box-sizing: border-box;
    }
-   .logo-box text-align: center; {
+   .logo-box {
      text-align: center;
      margin-bottom: 30px;
    }
@@ -63,12 +63,21 @@
    th { color: #17b7be; }
    
    .footer-note { text-align: center; margin-top: 35px; font-size: 11px; color: #7292bf; }
+
+   /* CSS Khusus Mode Cetak Printer Thermal */
+   @media print {
+     body * { visibility: hidden; background: white !important; color: black !important; }
+     #areaStruk, #areaStruk * { visibility: visible; }
+     #areaStruk { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; padding: 0; }
+     #areaStruk button { display: none; }
+   }
  </style>
 </head>
 <body>
 
 <div class="app-container">
 
+  <!-- ================= LAYAR MENU UTAMA / DASHBOARD ================= -->
   <div id="layarUtama">
      <div class="logo-box">
        <img src="icon.png" alt="Logo NUSAPOS">
@@ -80,6 +89,7 @@
      </div>
   </div>
 
+  <!-- ================= LAYAR 1: MESIN KASIR TRANSAKSI ================= -->
   <div id="layarKasir" style="display: none;" class="card-fitur">
      <h3>🛒 Mesin Kasir Digital</h3>
      <label>Pilih Barang / Jasa Dagangan:</label>
@@ -88,7 +98,7 @@
      <h4 style="margin: 15px 0 5px; color:#17b7be;">Daftar Keranjang:</h4>
      <table style="margin-bottom: 20px;">
         <thead>
-            <tr><th>Item</th><th style="text-align:right;">Subtotal</th></tr>
+            <tr><th style="color:#17b7be;">Item</th><th style="text-align:right; color:#17b7be;">Subtotal</th></tr>
         </thead>
         <tbody id="keranjangBody"></tbody>
      </table>
@@ -99,9 +109,29 @@
      </div>
      
      <button class="btn btn-aksen" onclick="prosesTransaksi()">Bayar & Simpan Struk</button>
-     <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="margin-top:10px; padding:8px;">⬅️ Kembali ke Menu</button>
+     
+     <!-- TAMPILAN STRUK SETELAH TRANSAKSI -->
+     <div id="areaStruk" style="display: none; background: white; color: black; padding: 15px; margin-top: 20px; border-radius: 8px; font-family: monospace;">
+        <div style="text-align: center; border-bottom: 1px dashed black; padding-bottom: 10px;">
+           <h4 id="strukNamaToko" style="margin: 0; font-size: 16px; color: black;">Nama Toko</h4>
+           <small id="strukWaktu" style="color: black;">Tanggal</small>
+        </div>
+        <table style="width: 100%; color: black; margin-top: 10px;" id="strukTabelItem">
+           <!-- Item belanjaan masuk via JS -->
+        </table>
+        <div style="border-top: 1px dashed black; margin-top: 10px; padding-top: 5px; text-align: right; font-weight: bold; color: black;">
+           TOTAL: <span id="strukTotal" style="color: black;">Rp 0</span>
+        </div>
+        <div style="text-align: center; margin-top: 15px; font-size: 11px; color: black;">
+           Thank You / Terima Kasih
+        </div>
+        <button class="btn btn-aksen" onclick="aksiCetakStruk()" style="margin-top: 15px; background: #17b7be; color: white;">🖨️ Cetak / Simpan PDF</button>
+     </div>
+     
+     <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="margin-top:15px; padding:8px;">⬅️ Kembali ke Menu</button>
   </div>
 
+  <!-- ================= LAYAR 2: MANAJEMEN PRODUK & JASA ================= -->
   <div id="layarProduk" style="display: none;" class="card-fitur">
      <h3>📦 Kelola Katalog Produk / Jasa</h3>
      <form id="formProduk">
@@ -113,7 +143,7 @@
 
      <table id="tabelProduk">
         <thead>
-           <tr><th>No</th><th>Nama</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr>
+           <tr><th style="color:#17b7be;">No</th><th style="color:#17b7be;">Nama</th><th style="color:#17b7be;">Harga</th><th style="color:#17b7be;">Stok</th><th style="color:#17b7be;">Aksi</th></tr>
         </thead>
         <tbody id="tabelProdukBody"></tbody>
      </table>
@@ -121,6 +151,7 @@
      <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="margin-top:20px; padding:8px;">⬅️ Kembali ke Menu</button>
   </div>
 
+  <!-- ================= LAYAR 3: LAPORAN PENJUALAN ================= -->
   <div id="layarLaporan" style="display: none;" class="card-fitur">
      <h3>📊 Laporan Grafik & Omset</h3>
      <div style="background:#0f2d59; padding:15px; border-radius:8px; text-align:center; margin-bottom:20px;">
@@ -135,6 +166,7 @@
      <button onclick="hapusSemuaData()" style="width:100%; background:transparent; border:none; color:#dc3545; font-size:11px; margin-top:15px; cursor:pointer; font-weight:bold;">⚠️ RESET ALL DATA TOKO</button>
   </div>
 
+  <!-- Footer Catatan Aplikasi -->
   <div class="footer-note">
      NUSAPOS v1.0 BETA Web Version
   </div>
