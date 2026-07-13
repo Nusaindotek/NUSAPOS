@@ -1,140 +1,142 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NUSAPOS - Dashboard</title>
-  <style>
-    body {
-      background-color: #0f2d59; /* Navy Blue */
-      color: #ffffff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-    }
-    .app-container {
-      width: 100%;
-      max-width: 450px;
-      padding: 30px 20px;
-      box-sizing: border-box;
-    }
-    .text-center { text-align: center; }
-    .logo-box img { width: 100px; height: auto; margin-bottom: 15px; }
-    h1 { font-size: 28px; margin: 5px 0; letter-spacing: 1px; }
-    .tagline { color: #17b7be; font-size: 14px; margin-bottom: 35px; }
-    
-    /* Area Menu & Konten */
-    .menu-area { display: flex; flex-direction: column; gap: 12px; }
-    .halaman-fitur { display: none; background-color: #153460; padding: 20px; border-radius: 12px; margin-top: 20px; }
-    
-    /* Form & Input di dalam Fitur */
-    label { display: block; margin: 15px 0 5px; font-weight: bold; font-size: 14px; }
-    input[type="text"], input[type="number"] {
-      width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #17b7be;
-      background: #0f2d59; color: white; box-sizing: border-box; font-size: 14px; margin-bottom: 10px;
-    }
-
-    /* Tombol Style */
-    .btn {
-      width: 100%; padding: 15px; font-size: 16px; font-weight: bold;
-      border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease;
-      text-decoration: none; box-sizing: border-box; display: block; text-align: center;
-    }
-    .btn-kasir { background-color: #ffffff; color: #0f2d59; border: 2px solid #ffffff; }
-    .btn-aksen { background-color: #17b7be; color: #0f2d59; }
-    .btn-batal { background-color: #e06666; color: white; margin-top: 15px; }
-    .btn-outline { background-color: transparent; color: #17b7be; border: 2px solid #17b7be; }
-    .btn:active { transform: scale(0.98); }
-    
-    .footer-note { margin-top: 40px; font-size: 11px; color: #7292bf; text-align: center; }
-    
-    /* List Item */
-    .item-list { background: #0f2d59; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 14px; }
-    .flex-space { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>NUSAPOS - Dashboard</title>
+ <style>
+   body {
+     background-color: #0f2d59;
+     color: #ffffff;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     margin: 0;
+     padding: 0;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     min-height: 100vh;
+   }
+   .app-container {
+     width: 100%;
+     max-width: 450px;
+     padding: 25px 20px;
+     box-sizing: border-box;
+   }
+   .logo-box text-align: center; {
+     text-align: center;
+     margin-bottom: 30px;
+   }
+   .logo-box img {
+     width: 85px;
+     height: auto;
+     margin-bottom: 10px;
+   }
+   h1 { font-size: 26px; margin: 5px 0; letter-spacing: 1px; text-align: center; }
+   .tagline { color: #17b7be; font-size: 13px; margin-bottom: 25px; text-align: center; }
+   
+   .menu-area { display: flex; flex-direction: column; gap: 12px; }
+   
+   .btn {
+     width: 100%; padding: 15px; font-size: 15px; font-weight: bold;
+     border: none; border-radius: 10px; cursor: pointer;
+     transition: all 0.2s ease; text-decoration: none; box-sizing: border-box;
+     display: block; text-align: center;
+   }
+   .btn-kasir { background-color: #ffffff; color: #0f2d59; border: 2px solid #ffffff; }
+   .btn-aksen { background-color: #17b7be; color: #0f2d59; }
+   .btn-outline { background-color: transparent; color: #17b7be; border: 2px solid #17b7be; }
+   .btn:active { transform: scale(0.98); }
+   
+   /* Style untuk Konten Fitur Dinamis */
+   .card-fitur {
+     background-color: #163e75; padding: 20px; border-radius: 12px;
+     box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-top: 10px;
+   }
+   .card-fitur h3 { color: #17b7be; margin-top: 0; border-bottom: 1px solid rgba(23,183,190,0.3); padding-bottom: 8px; }
+   
+   input, select {
+     width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px;
+     border: 1px solid #17b7be; background: #0f2d59; color: white; box-sizing: border-box;
+   }
+   table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+   th, td { padding: 8px; text-align: left; border-bottom: 1px solid #7292bf; }
+   th { color: #17b7be; }
+   
+   .footer-note { text-align: center; margin-top: 35px; font-size: 11px; color: #7292bf; }
+ </style>
 </head>
 <body>
 
 <div class="app-container">
-  
-  <!-- HUB UTAMA / DASHBOARD -->
-  <div id="halamanDashboard">
-    <div class="logo-box text-center">
-      <img src="icon.png" alt="Logo NUSAPOS">
-      <h1 id="displayNamaToko">NUSAPOS</h1>
-      <div class="tagline" id="displayModeUsaha">Aplikasi POS Universal</div>
-    </div>
-    <div class="menu-area" id="menuDinamis">
-      <p class="text-center" style="color: #7292bf;">Memuat konfigurasi aplikasi...</p>
-    </div>
+
+  <div id="layarUtama">
+     <div class="logo-box">
+       <img src="icon.png" alt="Logo NUSAPOS">
+       <h1 id="displayNamaToko">NUSAPOS</h1>
+       <div class="tagline" id="displayModeUsaha">Aplikasi POS Universal</div>
+     </div>
+     <div class="menu-area" id="menuDinamis">
+       <p style="text-align:center; color: #7292bf;">Memuat konfigurasi aplikasi...</p>
+     </div>
   </div>
 
-  <!-- 1. HALAMAN MESIN KASIR -->
-  <div id="fiturKasir" class="halaman-fitur">
-    <h2 style="color: #17b7be; margin-top:0;">🛒 Mesin Kasir</h2>
-    <div id="areaPilihProduk">
-      <label>Pilih Produk / Jasa:</label>
-      <div id="listProdukKasir"><!-- Diisi via JS --></div>
-    </div>
-    <div class="item-list" style="margin-top: 20px;">
-      <h4>Keranjang Belanja:</h4>
-      <div id="keranjangBelanja"><p style="color: #7292bf; font-size:12px;">Belum ada item.</p></div>
-      <hr style="border-color: #17b7be;">
-      <div class="flex-space">
-        <strong>Total:</strong>
-        <strong id="totalBelanja" style="color:#17b7be; font-size:18px;">Rp 0</strong>
-      </div>
-    </div>
-    <button class="btn btn-aksen" style="margin-top:15px;" onclick="prosesTransaksi()">Bayar & Simpan</button>
-    <button class="btn btn-batal" onclick="kembaliKeDashboard()">⬅️ Kembali</button>
+  <div id="layarKasir" style="display: none;" class="card-fitur">
+     <h3>🛒 Mesin Kasir Digital</h3>
+     <label>Pilih Barang / Jasa Dagangan:</label>
+     <select id="kasirPilihProduk" onchange="tambahKeKeranjang()"></select>
+     
+     <h4 style="margin: 15px 0 5px; color:#17b7be;">Daftar Keranjang:</h4>
+     <table style="margin-bottom: 20px;">
+        <thead>
+            <tr><th>Item</th><th style="text-align:right;">Subtotal</th></tr>
+        </thead>
+        <tbody id="keranjangBody"></tbody>
+     </table>
+     
+     <div style="display:flex; justify-content:space-between; font-weight:bold; background:#0f2d59; padding:10px; border-radius:6px; margin-bottom:15px;">
+        <span>TOTAL:</span>
+        <span id="kasirTotalBelanja" style="color:#17b7be;">Rp 0</span>
+     </div>
+     
+     <button class="btn btn-aksen" onclick="prosesTransaksi()">Bayar & Simpan Struk</button>
+     <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="margin-top:10px; padding:8px;">⬅️ Kembali ke Menu</button>
   </div>
 
-  <!-- 2. HALAMAN KELOLA PRODUK -->
-  <div id="fiturProduk" class="halaman-fitur">
-    <h2 style="color: #17b7be; margin-top:0;">📦 Kelola Produk / Jasa</h2>
-    <form id="formProduk">
-      <label>Nama Produk / Jasa</label>
-      <input type="text" id="inputNamaProduk" placeholder="Contoh: Kopi Hitam / Ganti Oli">
-      
-      <label>Harga Jual (Rp)</label>
-      <input type="number" id="inputHargaProduk" placeholder="Contoh: 15000">
-      
-      <div id="kolomStok">
-        <label>Stok Awal</label>
-        <input type="number" id="inputStokProduk" placeholder="Contoh: 50" value="0">
-      </div>
-      
-      <button type="button" class="btn btn-aksen" style="margin-top:10px;" onclick="tambahProdukKeData()">Simpan Item</button>
-    </form>
-    
-    <div class="item-list" style="margin-top: 20px;">
-      <h4>Daftar Item Saat Ini:</h4>
-      <div id="daftarProdukToko"></div>
-    </div>
-    <button class="btn btn-batal" onclick="kembaliKeDashboard()">⬅️ Kembali</button>
+  <div id="layarProduk" style="display: none;" class="card-fitur">
+     <h3>📦 Kelola Katalog Produk / Jasa</h3>
+     <form id="formProduk">
+        <input type="text" id="prodNama" placeholder="Nama Barang / Jenis Jasa">
+        <input type="number" id="prodHarga" placeholder="Harga Jual (Rp)">
+        <input type="number" id="prodStok" placeholder="Jumlah Stok Fisik (Isi 0 jika Mode Jasa)">
+        <button type="button" class="btn btn-aksen" onclick="simpanProduk()" style="padding:10px;">+ Tambah Item</button>
+     </form>
+
+     <table id="tabelProduk">
+        <thead>
+           <tr><th>No</th><th>Nama</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr>
+        </thead>
+        <tbody id="tabelProdukBody"></tbody>
+     </table>
+     
+     <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="margin-top:20px; padding:8px;">⬅️ Kembali ke Menu</button>
   </div>
 
-  <!-- 3. HALAMAN LAPORAN -->
-  <div id="fiturLaporan" class="halaman-fitur">
-    <h2 style="color: #17b7be; margin-top:0;">📊 Laporan Penjualan</h2>
-    <div class="item-list">
-      <div class="flex-space">
-        <span>Total Pendapatan:</span>
-        <strong id="omsetLaporan" style="color:#17b7be;">Rp 0</strong>
-      </div>
-    </div>
-    <div class="item-list" style="margin-top: 15px;">
-      <h4>Riwayat Transaksi:</h4>
-      <div id="riwayatTransaksi"></div>
-    </div>
-    <button class="btn btn-batal" onclick="kembaliKeDashboard()">⬅️ Kembali</button>
+  <div id="layarLaporan" style="display: none;" class="card-fitur">
+     <h3>📊 Laporan Grafik & Omset</h3>
+     <div style="background:#0f2d59; padding:15px; border-radius:8px; text-align:center; margin-bottom:20px;">
+        <span style="font-size:13px; color:#7292bf;">Total Omset Pendapatan</span><br>
+        <span id="grandTotalLaporan" style="font-size:24px; font-weight:bold; color:#17b7be;">Rp 0</span>
+     </div>
+
+     <h4 style="margin-bottom: 10px;">Riwayat Struk Terbuku:</h4>
+     <div id="isiLaporan" style="max-height: 250px; overflow-y: auto; margin-bottom:20px;"></div>
+     
+     <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="padding:8px;">⬅️ Kembali ke Menu</button>
+     <button onclick="hapusSemuaData()" style="width:100%; background:transparent; border:none; color:#dc3545; font-size:11px; margin-top:15px; cursor:pointer; font-weight:bold;">⚠️ RESET ALL DATA TOKO</button>
   </div>
 
   <div class="footer-note">
-    NUSAPOS v1.0 BETA Web Version
+     NUSAPOS v1.0 BETA Web Version
   </div>
 </div>
 
