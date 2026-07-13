@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setting Menu</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f2f5; }
+    .card { background: white; padding: 20px; border-radius: 12px; max-width: 500px; margin: auto; }
+    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
+    button { padding: 12px; width: 100%; background: #4CAF50; color: white; border: none; border-radius: 8px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Pengaturan Menu</h2>
+    <input id="namaMenu" placeholder="Nama Menu: Contoh Kasir">
+    <input id="linkMenu" placeholder="Link File: contoh kasir.html">
+    <input id="iconMenu" placeholder="Icon: Contoh 🛒">
+    <button onclick="simpanMenu()">TAMBAH MENU</button>
+    <a href="dashboard.html">← Kembali ke Dashboard</a>
+  </div>
+
+<script>
+let db;
+const req = indexedDB.open("NusaPOS", 1);
+req.onupgradeneeded = e => {
+  db = e.target.result;
+  if(!db.objectStoreNames.contains('menu')){
+    const store = db.createObjectStore("menu", {keyPath: "id", autoIncrement: true});
+    // Data awal
+    store.add({nama: "Kasir", link: "kasir.html", icon: "🛒"});
+    store.add({nama: "Setting", link: "setting.html", icon: "⚙️"});
+  }
+}
+req.onsuccess = e => { db = e.target.result; }
+
+function simpanMenu(){
+  const menu = {
+    nama: document.getElementById("namaMenu").value,
+    link: document.getElementById("linkMenu").value,
+    icon: document.getElementById("iconMenu").value
+  }
+  db.transaction("menu","readwrite").objectStore("menu").add(menu);
+  alert("Menu berhasil ditambah!");
+  document.querySelectorAll("input").forEach(i => i.value = "");
+}
+</script>
+</body>
+</html>
