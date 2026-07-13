@@ -3,17 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Setting Menu</title>
+  <title>Setting NUSAPOS</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: #f0f2f5; }
-    .card { background: white; padding: 20px; border-radius: 12px; max-width: 500px; margin: auto; }
-    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
-    button { padding: 12px; width: 100%; background: #4CAF50; color: white; border: none; border-radius: 8px; font-size: 16px; }
+    :root {
+      --warna-utama: #0A2A66;
+      --warna-aksen: #00B4A0;
+      --warna-bg: #F0F7F6;
+    }
+    body { font-family: Arial; padding: 20px; background: var(--warna-bg); }
+   .card { background: white; padding: 20px; border-radius: 12px; max-width: 500px; margin: 20px auto; }
+    h2 { color: var(--warna-utama); }
+    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing:border-box; }
+    button { padding: 12px; width: 100%; background: var(--warna-aksen); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight:bold; cursor:pointer; }
+    a { display:block; text-align:center; margin-top:15px; color:var(--warna-utama); }
+    #previewLogo { width:80px; margin-top:10px; border-radius:8px; display:none; }
   </style>
 </head>
 <body>
   <div class="card">
-    <h2>Pengaturan Menu</h2>
+    <h2>1. Pengaturan Logo</h2>
+    <input type="file" id="uploadLogo" accept="image/*">
+    <img id="previewLogo">
+    <button onclick="alert('Logo tersimpan otomatis')">SIMPAN LOGO</button>
+  </div>
+
+  <div class="card">
+    <h2>2. Tambah Menu Baru</h2>
     <input id="namaMenu" placeholder="Nama Menu: Contoh Kasir">
     <input id="linkMenu" placeholder="Link File: contoh kasir.html">
     <input id="iconMenu" placeholder="Icon: Contoh 🛒">
@@ -28,22 +43,43 @@ req.onupgradeneeded = e => {
   db = e.target.result;
   if(!db.objectStoreNames.contains('menu')){
     const store = db.createObjectStore("menu", {keyPath: "id", autoIncrement: true});
-    // Data awal
     store.add({nama: "Kasir", link: "kasir.html", icon: "🛒"});
     store.add({nama: "Setting", link: "setting.html", icon: "⚙️"});
   }
 }
-req.onsuccess = e => { db = e.target.result; }
+req.onsuccess = e => { db = e.target.result; loadLogoPreview(); }
 
+// Upload Logo
+document.getElementById('uploadLogo').onchange = e => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.onload = () => {
+    localStorage.setItem('logoToko', reader.result);
+    document.getElementById('previewLogo').src = reader.result;
+    document.getElementById('previewLogo').style.display = 'block';
+  }
+  reader.readAsDataURL(file);
+}
+
+function loadLogoPreview(){
+  const logo = localStorage.getItem('logoToko');
+  if(logo) {
+    document.getElementById('previewLogo').src = logo;
+    document.getElementById('previewLogo').style.display = 'block';
+  }
+}
+
+// Simpan Menu
 function simpanMenu(){
   const menu = {
     nama: document.getElementById("namaMenu").value,
     link: document.getElementById("linkMenu").value,
     icon: document.getElementById("iconMenu").value
   }
+  if(!menu.nama ||!menu.link) return alert("Nama dan Link wajib diisi!");
   db.transaction("menu","readwrite").objectStore("menu").add(menu);
   alert("Menu berhasil ditambah!");
-  document.querySelectorAll("input").forEach(i => i.value = "");
+  document.querySelectorAll("#namaMenu, #linkMenu, #iconMenu").forEach(i => i.value = "");
 }
 </script>
 </body>
