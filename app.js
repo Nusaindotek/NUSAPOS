@@ -1,19 +1,13 @@
-// Variabel Data Lokal (Array)
-let produkData = JSON.parse(localStorage.getItem('produkData')) || [];
-let transaksiData = JSON.parse(localStorage.getItem('transaksiData')) || [];
-let keranjang = [];
-
-// Fungsi Pengaturan dari halaman setting.html
+// Fungsi untuk menyimpan pengaturan dari halaman setting
 function simpanSetting() {
     const namaToko = document.getElementById('namaToko').value || "NUSAPOS";
     const modeUsaha = document.getElementById('modeUsaha').value;
-    const fiturKasir = document.getElementById('menuKasir').checked;
     const fiturProduk = document.getElementById('menuProduk').checked;
     const fiturLaporan = document.getElementById('menuLaporan').checked;
 
     localStorage.setItem('namaToko', namaToko);
     localStorage.setItem('modeUsaha', modeUsaha);
-    localStorage.setItem('fiturKasir', fiturKasir);
+    localStorage.setItem('fiturKasir', true); // Wajib aktif
     localStorage.setItem('fiturProduk', fiturProduk);
     localStorage.setItem('fiturLaporan', fiturLaporan);
 
@@ -21,175 +15,275 @@ function simpanSetting() {
     window.location.href = 'index.html';
 }
 
-// Inisialisasi Dashboard Utama
+// Inisialisasi Data saat DOM Selesai Dimuat
 document.addEventListener("DOMContentLoaded", function() {
-    if (!document.getElementById('displayNamaToko')) return; 
+    // 1. Logika untuk Halaman Utama/Dashboard (jika elemennya ada)
+    const namaTokoElement = document.getElementById('displayNamaToko');
+    if (namaTokoElement) {
+        const namaToko = localStorage.getItem('namaToko') || "NUSAPOS Universal";
+        const modeUsaha = localStorage.getItem('modeUsaha') || "Retail";
+        const fiturProduk = localStorage.getItem('fiturProduk') !== "false";
+        const fiturLaporan = localStorage.getItem('fiturLaporan') !== "false";
 
-    const namaToko = localStorage.getItem('namaToko') || "NUSAPOS Universal";
-    const modeUsaha = localStorage.getItem('modeUsaha') || "Retail";
-    const fiturKasir = localStorage.getItem('fiturKasir') !== "false";
-    const fiturProduk = localStorage.getItem('fiturProduk') !== "false";
-    const fiturLaporan = localStorage.getItem('fiturLaporan') !== "false";
+        namaTokoElement.innerText = namaToko;
+        document.getElementById('displayModeUsaha').innerText = `Mode Usaha: ${modeUsaha}`;
 
-    document.getElementById('displayNamaToko').innerText = namaToko;
-    document.getElementById('displayModeUsaha').innerText = `Mode Usaha: ${modeUsaha}`;
-
-    // Sembunyikan kolom stok jika owner memilih Mode Jasa
-    const kolomStok = document.getElementById('kolomStok');
-    if(kolomStok && modeUsaha === "Jasa") {
-        kolomStok.style.display = "none";
+        // Render Menu Dinamis
+        const containerMenu = document.getElementById('menuDinamis');
+        containerMenu.innerHTML = `
+            <button class="btn btn-kasir" onclick="bukaFitur('kasir')">🛒 Masuk Kasir (${modeUsaha})</button>
+        `;
+        if (fiturProduk) {
+            containerMenu.innerHTML += `<button class="btn btn-aksen" onclick="bukaFitur('produk')">📦 Kelola Produk & Jasa</button>`;
+        }
+        if (fiturLaporan) {
+            containerMenu.innerHTML += `<button class="btn btn-aksen" onclick="bukaFitur('laporan')">📊 Lihat Laporan Penjualan</button>`;
+        }
+        containerMenu.innerHTML += `<a href="setting.html" class="btn btn-outline">⚙️ Pengaturan Halaman</a>`;
+        
+        // Load data awal untuk Kasir dan Kelola Produk
+        renderPilihanProdukKasir();
+        renderTabelProduk();
+        renderLaporanPenjualan();
     }
-
-    // Render Tombol Maksimal 5 Menu Terkontrol
-    const containerMenu = document.getElementById('menuDinamis');
-    containerMenu.innerHTML = ""; 
-
-    if (fiturKasir) {
-        containerMenu.innerHTML += `<button class="btn btn-kasir" onclick="bukaFitur('fiturKasir')">🛒 Masuk Kasir</button>`;
-    }
-    if (fiturProduk) {
-        containerMenu.innerHTML += `<button class="btn btn-aksen" onclick="bukaFitur('fiturProduk')">📦 Kelola Produk & Jasa</button>`;
-    }
-    if (fiturLaporan) {
-        containerMenu.innerHTML += `<button class="btn btn-aksen" onclick="bukaFitur('fiturLaporan')">📊 Lihat Laporan Penjualan</button>`;
-    }
-    containerMenu.innerHTML += `<a href="setting.html" class="btn btn-outline">⚙️ Pengaturan Halaman</a>`;
-
-    // Render data pendukung
-    renderDaftarProduk();
-    renderKasirProduk();
-    renderLaporan();
 });
 
-// Sistem Navigasi SPA (Single Page Application)
-function bukaFitur(idFitur) {
-    document.getElementById('halamanDashboard').style.display = "none";
-    document.getElementById(idFitur).style.display = "block";
-}
+// Sistem Navigasi Single Page Dinamis
+function bukaFitur(namaFitur) {
+    // Sembunyikan semua layar konten dan menu utama
+    document.getElementById('layarUtama').style.display = 'none';
+    document.getElementById('layarKasir').style.display = 'none';
+    document.getElementById('layarProduk').style.display = 'none';
+    document.getElementById('layarLaporan').style.display = 'none';
 
-function kembaliKeDashboard() {
-    document.getElementById('fiturKasir').style.style.display = "none";
-    document.getElementById('fiturProduk').style.display = "none";
-    document.getElementById('fiturLaporan').style.display = "none";
-    document.getElementById('halamanDashboard').style.display = "block";
-}
-
-// ================= FITUR KELOLA PRODUK =================
-function tambahProdukKeData() {
-    const nama = document.getElementById('inputNamaProduk').value;
-    const harga = parseInt(document.getElementById('inputHargaProduk').value);
-    const stok = parseInt(document.getElementById('inputStokProduk').value) || 0;
-
-    if(!nama || !harga) return alert("Nama dan Harga wajib diisi!");
-
-    produkData.push({ id: Date.now(), nama, harga, stok });
-    localStorage.setItem('produkData', JSON.stringify(produkData));
-    
-    alert("Item berhasil disimpan!");
-    document.getElementById('formProduk').reset();
-    renderDaftarProduk();
-    renderKasirProduk();
-}
-
-function renderDaftarProduk() {
-    const container = document.getElementById('daftarProdukToko');
-    if(!container) return;
-    container.innerHTML = produkData.length === 0 ? "<p style='color:#7292bf; font-size:12px;'>Belum ada produk.</p>" : "";
-    
-    produkData.forEach(p => {
-        container.innerHTML += `
-            <div class="flex-space" style="border-bottom: 1px solid #153460; padding: 5px 0;">
-                <span>${p.nama} (Rp ${p.harga})</span>
-                <span>Stok: ${p.stok}</span>
-            </div>
-        `;
-    });
-}
-
-// ================= FITUR MESIN KASIR =================
-function renderKasirProduk() {
-    const container = document.getElementById('listProdukKasir');
-    if(!container) return;
-    container.innerHTML = produkData.length === 0 ? "<p style='color:#7292bf; font-size:12px;'>Isi produk terlebih dahulu di menu Kelola Produk.</p>" : "";
-    
-    produkData.forEach(p => {
-        container.innerHTML += `
-            <button class="btn btn-outline" style="margin-bottom:8px; padding:10px; font-size:14px;" onclick="tambahKeKeranjang(${p.id})">
-                + ${p.nama} (Rp ${p.harga})
-            </button>
-        `;
-    });
-}
-
-function tambahKeKeranjang(id) {
-    const produk = produkData.find(p => p.id === id);
-    const itemKeranjang = keranjang.find(k => k.id === id);
-
-    if(itemKeranjang) {
-        itemKeranjang.qty++;
-    } else {
-        keranjang.push({ ...produk, qty: 1 });
+    // Tampilkan layar yang dipilih
+    if (namaFitur === 'dashboard') {
+        document.getElementById('layarUtama').style.display = 'block';
+    } else if (namaFitur === 'kasir') {
+        document.getElementById('layarKasir').style.display = 'block';
+        renderPilihanProdukKasir();
+    } else if (namaFitur === 'produk') {
+        document.getElementById('layarProduk').style.display = 'block';
+        renderTabelProduk();
+    } else if (namaFitur === 'laporan') {
+        document.getElementById('layarLaporan').style.display = 'block';
+        renderLaporanPenjualan();
     }
-    updateKeranjangView();
 }
 
-function updateKeranjangView() {
-    const container = document.getElementById('keranjangBelanja');
-    const totalElement = document.getElementById('totalBelanja');
-    container.innerHTML = "";
+// ==================== ENGINE KELOLA PRODUK & JASA ====================
+function ambilDataProduk() {
+    return JSON.parse(localStorage.getItem('databaseProduk')) || [];
+}
+
+function simpanProduk() {
+    const nama = document.getElementById('prodNama').value.trim();
+    const harga = parseFloat(document.getElementById('prodHarga').value) || 0;
+    const stok = parseInt(document.getElementById('prodStok').value) || 0;
+    const modeUsaha = localStorage.getItem('modeUsaha') || "Retail";
+
+    if (!nama || harga <= 0) {
+        alert("Nama produk dan harga harus diisi dengan benar!");
+        return;
+    }
+
+    let database = ambilDataProduk();
     
-    let total = 0;
-    keranjang.forEach(k => {
-        total += (k.harga * k.qty);
-        container.innerHTML += `
-            <div class="flex-space">
-                <span>${k.nama} x ${k.qty}</span>
-                <span>Rp ${k.harga * k.qty}</span>
-            </div>
+    // Objek produk baru
+    const produkBaru = {
+        id: Date.now(),
+        nama: nama,
+        harga: harga,
+        stok: modeUsaha === "Jasa" ? "-" : stok // Sembunyikan stok jika mode jasa
+    };
+
+    database.push(produkBaru);
+    localStorage.setItem('databaseProduk', JSON.stringify(database));
+    
+    // Reset Form & Refresh Tabel
+    document.getElementById('formProduk').reset();
+    renderTabelProduk();
+    alert("Produk/Jasa berhasil ditambahkan!");
+}
+
+function hapusProduk(id) {
+    if (confirm("Hapus item ini?")) {
+        let database = ambilDataProduk();
+        database = database.filter(item => item.id !== id);
+        localStorage.setItem('databaseProduk', JSON.stringify(database));
+        renderTabelProduk();
+    }
+}
+
+function renderTabelProduk() {
+    const database = ambilDataProduk();
+    const tbody = document.getElementById('tabelProdukBody');
+    if(!tbody) return;
+    
+    tbody.innerHTML = "";
+    
+    if(database.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#7292bf;">Belum ada data barang. Silakan tambah di atas.</td></tr>`;
+        return;
+    }
+
+    database.forEach((item, index) => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${index + 1}</td>
+                <td><strong>${item.nama}</strong></td>
+                <td>Rp ${item.harga.toLocaleString('id-ID')}</td>
+                <td>${item.stok}</td>
+                <td><button onclick="hapusProduk(${item.id})" style="background:#dc3545; color:white; border:none; border-radius:4px; padding:4px 8px; cursor:pointer;">X</button></td>
+            </tr>
         `;
     });
-    totalElement.innerText = `Rp ${total}`;
+}
+
+// ==================== ENGINE MESIN KASIR ====================
+let keranjangBelanja = [];
+
+function renderPilihanProdukKasir() {
+    const database = ambilDataProduk();
+    const select = document.getElementById('kasirPilihProduk');
+    if(!select) return;
+
+    select.innerHTML = `<option value="">-- Pilih Produk/Jasa --</option>`;
+    database.forEach(item => {
+        // Blokir jika mode retail dan stok habis
+        const infoStok = item.stok !== "-" ? ` (Stok: ${item.stok})` : "";
+        select.innerHTML += `<option value="${item.id}">${item.nama} - Rp ${item.harga.toLocaleString('id-ID')}${infoStok}</option>`;
+    });
+}
+
+function tambahKeKeranjang() {
+    const select = document.getElementById('kasirPilihProduk');
+    const idTerpilih = parseFloat(select.value);
+    if (!idTerpilih) return;
+
+    const database = ambilDataProduk();
+    const produk = database.find(item => item.id === idTerpilih);
+
+    if (produk) {
+        // Validasi stok untuk Mode Retail
+        if (produk.stok !== "-" && produk.stok <= 0) {
+            alert("Stok barang habis!");
+            return;
+        }
+
+        // Cek apakah item sudah ada di keranjang
+        const itemKeranjang = keranjangBelanja.find(item => item.id === idTerpilih);
+        if (itemKeranjang) {
+            if (produk.stok !== "-" && itemKeranjang.qty >= produk.stok) {
+                alert("Tidak bisa menambah melebihi stok yang tersedia!");
+                return;
+            }
+            itemKeranjang.qty++;
+        } else {
+            keranjangBelanja.push({
+                id: produk.id,
+                nama: produk.nama,
+                harga: produk.harga,
+                qty: 1
+            });
+        }
+        renderKeranjang();
+    }
+}
+
+function renderKeranjang() {
+    const tbody = document.getElementById('keranjangBody');
+    let total = 0;
+    tbody.innerHTML = "";
+
+    keranjangBelanja.forEach((item, index) => {
+        const subtotal = item.harga * item.qty;
+        total += subtotal;
+        tbody.innerHTML += `
+            <tr>
+                <td>${item.nama} x ${item.qty}</td>
+                <td style="text-align:right;">Rp ${subtotal.toLocaleString('id-ID')}</td>
+            </tr>
+        `;
+    });
+
+    document.getElementById('kasirTotalBelanja').innerText = `Rp ${total.toLocaleString('id-ID')}`;
 }
 
 function prosesTransaksi() {
-    if(keranjang.length === 0) return alert("Keranjang masih kosong!");
+    if (keranjangBelanja.length === 0) {
+        alert("Keranjang masih kosong!");
+        return;
+    }
 
-    let total = keranjang.reduce((sum, item) => sum + (item.harga * item.qty), 0);
-    
-    // Simpan data transaksi
-    transaksiData.push({
-        id: Date.now(),
-        waktu: new Date().toLocaleTimeString(),
-        items: keranjang,
-        total: total
+    const modeUsaha = localStorage.getItem('modeUsaha') || "Retail";
+    let databaseProduk = ambilDataProduk();
+    let totalBelanja = 0;
+
+    // Potong stok jika berada di mode retail
+    if (modeUsaha === "Retail") {
+        for (let item of keranjangBelanja) {
+            let prod = databaseProduk.find(p => p.id === item.id);
+            if (prod && prod.stok !== "-") {
+                prod.stok -= item.qty;
+            }
+        }
+        localStorage.setItem('databaseProduk', JSON.stringify(databaseProduk));
+    }
+
+    keranjangBelanja.forEach(item => totalBelanja += (item.harga * item.qty));
+
+    // Catat ke laporan
+    let laporan = JSON.parse(localStorage.getItem('databaseLaporan')) || [];
+    laporan.push({
+        idTransaksi: "TRX-" + Date.now(),
+        tanggal: new Date().toLocaleString('id-ID'),
+        total: totalBelanja,
+        detail: keranjangBelanja
     });
-    
-    localStorage.setItem('transaksiData', JSON.stringify(transaksiData));
-    
+    localStorage.setItem('databaseLaporan', JSON.stringify(laporan));
+
     alert("Transaksi Sukses Disimpan!");
-    keranjang = [];
-    updateKeranjangView();
-    renderLaporan();
-    kembaliKeDashboard();
+    keranjangBelanja = [];
+    renderKeranjang();
+    bukaFitur('dashboard');
 }
 
-// ================= FITUR LAPORAN =================
-function renderLaporan() {
-    const omsetElement = document.getElementById('omsetLaporan');
-    const container = document.getElementById('riwayatTransaksi');
-    if(!omsetElement || !container) return;
+// ==================== ENGINE LAPORAN PENJUALAN ====================
+function renderLaporanPenjualan() {
+    const laporan = JSON.parse(localStorage.getItem('databaseLaporan')) || [];
+    const divLaporan = document.getElementById('isiLaporan');
+    if(!divLaporan) return;
 
-    let totalOmset = transaksiData.reduce((sum, t) => sum + t.total, 0);
-    omsetElement.innerText = `Rp ${totalOmset}`;
+    divLaporan.innerHTML = "";
+    let grandTotal = 0;
 
-    container.innerHTML = transaksiData.length === 0 ? "<p style='color:#7292bf; font-size:12px;'>Belum ada transaksi.</p>" : "";
-    
-    transaksiData.forEach(t => {
-        container.innerHTML += `
-            <div style="background:#0f2d59; padding:8px; border-radius:6px; margin-bottom:8px; font-size:12px;">
-                <div class="flex-space"><strong>Nota #${t.id.toString().slice(-4)}</strong> <span>${t.waktu}</span></div>
-                <div style="color:#17b7be;">Total: Rp ${t.total}</div>
+    if (laporan.length === 0) {
+        divLaporan.innerHTML = `<p style="text-align:center; color:#7292bf;">Belum ada riwayat transaksi penjualan.</p>`;
+        document.getElementById('grandTotalLaporan').innerText = "Rp 0";
+        return;
+    }
+
+    laporan.forEach(trx => {
+        grandTotal += trx.total;
+        let detailHtml = trx.detail.map(d => `${d.nama} (${d.qty})`).join(', ');
+        divLaporan.innerHTML += `
+            <div style="background:#0f2d59; padding:10px; border-radius:8px; margin-bottom:10px; font-size:13px; border-left: 3px solid #17b7be;">
+                <strong>${trx.idTransaksi}</strong> <span style="float:right; color:#17b7be;">Rp ${trx.total.toLocaleString('id-ID')}</span><br>
+                <small style="color:#7292bf;">${trx.tanggal}</small><br>
+                <span style="font-size:12px; color:#ffffff;">Item: ${detailHtml}</span>
             </div>
         `;
     });
+
+    document.getElementById('grandTotalLaporan').innerText = `Rp ${grandTotal.toLocaleString('id-ID')}`;
+}
+
+function hapusSemuaData() {
+    if (confirm("⚠️ PERINGATAN: Ini akan menghapus seluruh data produk dan riwayat laporan toko Anda. Lanjutkan?")) {
+        localStorage.removeItem('databaseProduk');
+        localStorage.removeItem('databaseLaporan');
+        alert("Semua data berhasil dibersihkan!");
+        window.location.reload();
+    }
 }
