@@ -6,14 +6,13 @@
   <title>NUSAPOS - Dashboard</title>
   <style>
     body {
-      background-color: #0f2d59; /* Navy Blue dari Logo */
+      background-color: #0f2d59; /* Navy Blue */
       color: #ffffff;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
-      align-items: center;
       min-height: 100vh;
     }
     .app-container {
@@ -21,77 +20,117 @@
       max-width: 450px;
       padding: 30px 20px;
       box-sizing: border-box;
-      text-align: center;
     }
-    .logo-box img {
-      width: 100px;
-      height: auto;
-      margin-bottom: 15px;
+    .text-center { text-align: center; }
+    .logo-box img { width: 100px; height: auto; margin-bottom: 15px; }
+    h1 { font-size: 28px; margin: 5px 0; letter-spacing: 1px; }
+    .tagline { color: #17b7be; font-size: 14px; margin-bottom: 35px; }
+    
+    /* Area Menu & Konten */
+    .menu-area { display: flex; flex-direction: column; gap: 12px; }
+    .halaman-fitur { display: none; background-color: #153460; padding: 20px; border-radius: 12px; margin-top: 20px; }
+    
+    /* Form & Input di dalam Fitur */
+    label { display: block; margin: 15px 0 5px; font-weight: bold; font-size: 14px; }
+    input[type="text"], input[type="number"] {
+      width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #17b7be;
+      background: #0f2d59; color: white; box-sizing: border-box; font-size: 14px; margin-bottom: 10px;
     }
-    h1 {
-      font-size: 28px;
-      margin: 5px 0;
-      letter-spacing: 1px;
-    }
-    .tagline {
-      color: #17b7be; /* Tosca dari Logo */
-      font-size: 14px;
-      margin-bottom: 35px;
-    }
-    .menu-area {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+
+    /* Tombol Style */
     .btn {
-      width: 100%;
-      padding: 15px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      box-sizing: border-box;
+      width: 100%; padding: 15px; font-size: 16px; font-weight: bold;
+      border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease;
+      text-decoration: none; box-sizing: border-box; display: block; text-align: center;
     }
-    .btn-kasir {
-      background-color: #ffffff;
-      color: #0f2d59;
-      border: 2px solid #ffffff;
-    }
-    .btn-aksen {
-      background-color: #17b7be; /* Tosca */
-      color: #0f2d59;
-    }
-    .btn-outline {
-      background-color: transparent;
-      color: #17b7be;
-      border: 2px solid #17b7be;
-    }
-    .btn:active {
-      transform: scale(0.98);
-    }
-    .footer-note {
-      margin-top: 40px;
-      font-size: 11px;
-      color: #7292bf;
-    }
+    .btn-kasir { background-color: #ffffff; color: #0f2d59; border: 2px solid #ffffff; }
+    .btn-aksen { background-color: #17b7be; color: #0f2d59; }
+    .btn-batal { background-color: #e06666; color: white; margin-top: 15px; }
+    .btn-outline { background-color: transparent; color: #17b7be; border: 2px solid #17b7be; }
+    .btn:active { transform: scale(0.98); }
+    
+    .footer-note { margin-top: 40px; font-size: 11px; color: #7292bf; text-align: center; }
+    
+    /* List Item */
+    .item-list { background: #0f2d59; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 14px; }
+    .flex-space { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   </style>
 </head>
 <body>
 
 <div class="app-container">
-  <!-- Header Logo & Nama Toko Dinamis -->
-  <div class="logo-box">
-    <img src="icon.png" alt="Logo NUSAPOS">
-    <h1 id="displayNamaToko">NUSAPOS</h1>
-    <div class="tagline" id="displayModeUsaha">Aplikasi POS Universal</div>
+  
+  <!-- HUB UTAMA / DASHBOARD -->
+  <div id="halamanDashboard">
+    <div class="logo-box text-center">
+      <img src="icon.png" alt="Logo NUSAPOS">
+      <h1 id="displayNamaToko">NUSAPOS</h1>
+      <div class="tagline" id="displayModeUsaha">Aplikasi POS Universal</div>
+    </div>
+    <div class="menu-area" id="menuDinamis">
+      <p class="text-center" style="color: #7292bf;">Memuat konfigurasi aplikasi...</p>
+    </div>
   </div>
 
-  <!-- Area Tombol Menu Maksimal 5 Halaman (Di-render via JavaScript) -->
-  <div class="menu-area" id="menuDinamis">
-    <p style="color: #7292bf;">Memuat konfigurasi aplikasi...</p>
+  <!-- 1. HALAMAN MESIN KASIR -->
+  <div id="fiturKasir" class="halaman-fitur">
+    <h2 style="color: #17b7be; margin-top:0;">🛒 Mesin Kasir</h2>
+    <div id="areaPilihProduk">
+      <label>Pilih Produk / Jasa:</label>
+      <div id="listProdukKasir"><!-- Diisi via JS --></div>
+    </div>
+    <div class="item-list" style="margin-top: 20px;">
+      <h4>Keranjang Belanja:</h4>
+      <div id="keranjangBelanja"><p style="color: #7292bf; font-size:12px;">Belum ada item.</p></div>
+      <hr style="border-color: #17b7be;">
+      <div class="flex-space">
+        <strong>Total:</strong>
+        <strong id="totalBelanja" style="color:#17b7be; font-size:18px;">Rp 0</strong>
+      </div>
+    </div>
+    <button class="btn btn-aksen" style="margin-top:15px;" onclick="prosesTransaksi()">Bayar & Simpan</button>
+    <button class="btn btn-batal" onclick="kembaliKeDashboard()">⬅️ Kembali</button>
+  </div>
+
+  <!-- 2. HALAMAN KELOLA PRODUK -->
+  <div id="fiturProduk" class="halaman-fitur">
+    <h2 style="color: #17b7be; margin-top:0;">📦 Kelola Produk / Jasa</h2>
+    <form id="formProduk">
+      <label>Nama Produk / Jasa</label>
+      <input type="text" id="inputNamaProduk" placeholder="Contoh: Kopi Hitam / Ganti Oli">
+      
+      <label>Harga Jual (Rp)</label>
+      <input type="number" id="inputHargaProduk" placeholder="Contoh: 15000">
+      
+      <div id="kolomStok">
+        <label>Stok Awal</label>
+        <input type="number" id="inputStokProduk" placeholder="Contoh: 50" value="0">
+      </div>
+      
+      <button type="button" class="btn btn-aksen" style="margin-top:10px;" onclick="tambahProdukKeData()">Simpan Item</button>
+    </form>
+    
+    <div class="item-list" style="margin-top: 20px;">
+      <h4>Daftar Item Saat Ini:</h4>
+      <div id="daftarProdukToko"></div>
+    </div>
+    <button class="btn btn-batal" onclick="kembaliKeDashboard()">⬅️ Kembali</button>
+  </div>
+
+  <!-- 3. HALAMAN LAPORAN -->
+  <div id="fiturLaporan" class="halaman-fitur">
+    <h2 style="color: #17b7be; margin-top:0;">📊 Laporan Penjualan</h2>
+    <div class="item-list">
+      <div class="flex-space">
+        <span>Total Pendapatan:</span>
+        <strong id="omsetLaporan" style="color:#17b7be;">Rp 0</strong>
+      </div>
+    </div>
+    <div class="item-list" style="margin-top: 15px;">
+      <h4>Riwayat Transaksi:</h4>
+      <div id="riwayatTransaksi"></div>
+    </div>
+    <button class="btn btn-batal" onclick="kembaliKeDashboard()">⬅️ Kembali</button>
   </div>
 
   <div class="footer-note">
