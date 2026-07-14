@@ -7,27 +7,29 @@
  <style>
    :root { --merah-utama: #8B0000; --merah-gelap: #5A0000; --tosca: #17b7be; --teal: #00796B; --putih: #ffffff; }
    body { background-color: var(--merah-utama); color: var(--putih); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-   .app-container { width: 100%; max-width: 450px; padding: 25px 20px; box-sizing: border-box; }
-   .logo-box { text-align: center; margin-bottom: 30px; }
-   .logo-box img { width: 85px; height: auto; margin-bottom: 10px; background: var(--putih); padding: 10px; border-radius: 12px; }
+  .app-container { width: 100%; max-width: 450px; padding: 25px 20px; box-sizing: border-box; }
+  .logo-box { text-align: center; margin-bottom: 30px; }
+  .logo-box img { width: 85px; height: auto; margin-bottom: 10px; background: var(--putih); padding: 10px; border-radius: 12px; }
    h1 { font-size: 26px; margin: 5px 0; letter-spacing: 1px; text-align: center; }
-   .tagline { color: var(--tosca); font-size: 13px; margin-bottom: 25px; text-align: center; font-weight: bold; text-shadow: 0 0 5px rgba(23,183,190,0.3); }
-   .menu-area { display: flex; flex-direction: column; gap: 12px; }
-   .btn { width: 100%; padding: 15px; font-size: 15px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-decoration: none; box-sizing: border-box; display: block; text-align: center; }
-   .btn-kasir { background-color: var(--putih); color: var(--merah-gelap); border: 2px solid var(--putih); }
-   .btn-aksen { background: linear-gradient(135deg, var(--tosca), var(--teal)); color: var(--putih); box-shadow: 0 3px 8px rgba(23,183,190,0.3); }
-   .btn-outline { background-color: transparent; color: var(--tosca); border: 2px solid var(--tosca); }
-   .btn:active { transform: scale(0.98); }
-   .card-fitur { background-color: var(--merah-gelap); padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); margin-top: 10px; border: 1px solid rgba(23,183,190,0.25); }
-   .card-fitur h3 { color: var(--tosca); margin-top: 0; border-bottom: 1px solid rgba(23,183,190,0.4); padding-bottom: 8px; }
-   input, select { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid var(--tosca); background: var(--merah-gelap); color: white; box-sizing: border-box; }
-   input:focus, select:focus { outline: 2px solid var(--teal); }
+  .tagline { color: var(--tosca); font-size: 13px; margin-bottom: 25px; text-align: center; font-weight: bold; text-shadow: 0 0 5px rgba(23,183,190,0.3); }
+  .menu-area { display: flex; flex-direction: column; gap: 12px; }
+  .btn { width: 100%; padding: 15px; font-size: 15px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-decoration: none; box-sizing: border-box; display: block; text-align: center; }
+  .btn-kasir { background-color: var(--putih); color: var(--merah-gelap); border: 2px solid var(--putih); }
+  .btn-aksen { background: linear-gradient(135deg, var(--tosca), var(--teal)); color: var(--putih); box-shadow: 0 3px 8px rgba(23,183,190,0.3); }
+  .btn-outline { background-color: transparent; color: var(--tosca); border: 2px solid var(--tosca); }
+  .btn:active { transform: scale(0.98); }
+  .card-fitur { background-color: var(--merah-gelap); padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); margin-top: 10px; border: 1px solid rgba(23,183,190,0.25); }
+  .card-fitur h3 { color: var(--tosca); margin-top: 0; border-bottom: 1px solid rgba(23,183,190,0.4); padding-bottom: 8px; }
+   input, select, textarea { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid var(--tosca); background: var(--merah-gelap); color: white; box-sizing: border-box; }
+   input:focus, select:focus, textarea:focus { outline: 2px solid var(--teal); }
    input:disabled { background: #3a0000; color: #aaa; }
    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
    th, td { padding: 8px; text-align: left; border-bottom: 1px solid rgba(23,183,190,0.3); }
    th { color: var(--tosca); }
-   .footer-note { text-align: center; margin-top: 35px; font-size: 11px; color: rgba(255,255,255,0.5); }
-   @media print { body * { visibility: hidden; } #areaStruk, #areaStruk * { visibility: visible; } #areaStruk { position: absolute; left: 0; top: 0; width: 100%; background: white !important; color: black !important; } #areaStruk button { display: none; } }
+  .footer-note { text-align: center; margin-top: 35px; font-size: 11px; color: rgba(255,255,255,0.5); }
+  .qty-btn { background:var(--teal); color:white; border:none; border-radius:4px; padding:2px 8px; cursor:pointer; font-weight:bold; }
+  .qty-btn.del { background:#dc3545; }
+   @media print { body * { visibility: hidden; } #areaStruk, #areaStruk * { visibility: visible; } #areaStruk { position: absolute; left: 0; top: 0; width: 100%; background: white!important; color: black!important; } #areaStruk button { display: none; } }
  </style>
 </head>
 <body>
@@ -42,7 +44,7 @@
     <label>Pilih Barang / Jasa Dagangan:</label>
     <select id="kasirPilihProduk" onchange="tambahKeKeranjang()"></select>
     <h4 style="margin: 15px 0 5px; color:var(--tosca);">Daftar Keranjang:</h4>
-    <table style="margin-bottom: 20px;"><thead><tr><th style="color:var(--tosca);">Item</th><th style="text-align:right; color:var(--tosca);">Subtotal</th></tr></thead><tbody id="keranjangBody"></tbody></table>
+    <table style="margin-bottom: 20px;"><thead><tr><th style="color:var(--tosca);">Item</th><th style="text-align:center; color:var(--tosca);">Qty</th><th style="text-align:right; color:var(--tosca);">Subtotal</th></tr></thead><tbody id="keranjangBody"></tbody></table>
     <div style="display:flex; justify-content:space-between; font-weight:bold; background:var(--merah-gelap); padding:10px; border-radius:6px; margin-bottom:15px; border:1px solid var(--tosca);"><span>TOTAL:</span><span id="kasirTotalBelanja" style="color:var(--tosca);">Rp 0</span></div>
     <button class="btn btn-aksen" onclick="prosesTransaksi()">Bayar & Simpan Struk</button>
     <div id="areaStruk" style="display: none; background: white; color: black; padding: 15px; margin-top: 20px; border-radius: 8px; font-family: monospace;">
@@ -79,7 +81,8 @@
 
   <div id="layarKustom" style="display: none;" class="card-fitur">
     <h3 id="judulLayarKustom">📄 Halaman Kustom</h3>
-    <div id="isiLayarKustom"></div>
+    <div id="formKustom"></div>
+    <table id="tabelKustom"><thead id="theadKustom"></thead><tbody id="tbodyKustom"></tbody></table>
     <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="margin-top:20px; padding:8px;">⬅️ Kembali ke Menu</button>
   </div>
 
