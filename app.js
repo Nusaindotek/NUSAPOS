@@ -1,8 +1,7 @@
-// ==================== GLOBAL VARIABLE ====================
 let keranjangBelanja = [];
 let menuKustom = JSON.parse(localStorage.getItem('menuKustom')) || [];
+const MAX_HALAMAN_KUSTOM = 2; // 6 total - 4 halaman fix = 2
 
-// Fungsi untuk menyimpan pengaturan dari halaman setting
 function simpanSetting() {
     const namaToko = document.getElementById('namaToko').value || "NUSAPOS";
     const modeUsaha = document.getElementById('modeUsaha').value;
@@ -17,7 +16,6 @@ function simpanSetting() {
     window.location.href = 'index.html';
 }
 
-// FUNGSI: AMBIL DATA BERDASARKAN MODE
 function getProdukByMode() {
     const database = JSON.parse(localStorage.getItem('databaseProduk')) || [];
     const modeUsaha = localStorage.getItem('modeUsaha') || "Retail";
@@ -25,7 +23,6 @@ function getProdukByMode() {
     return database.filter(item => item.tipe === tipeTarget);
 }
 
-// Inisialisasi Data saat DOM Selesai Dimuat
 document.addEventListener("DOMContentLoaded", function() {
     const namaTokoElement = document.getElementById('displayNamaToko');
     if (namaTokoElement) {
@@ -40,10 +37,10 @@ document.addEventListener("DOMContentLoaded", function() {
         renderTabelProduk();
         renderLaporanPenjualan();
         cekModeStok();
+        if(document.getElementById('daftarHalamanKustom')) renderDaftarHalamanKustom(); // Untuk setting
     }
 });
 
-// FUNGSI: RENDER MENU DINAMIS + MENU KUSTOM
 function renderMenuDinamis(modeUsaha, fiturProduk, fiturLaporan) {
     const containerMenu = document.getElementById('menuDinamis');
     let html = `<button class="btn btn-kasir" onclick="bukaFitur('kasir')">🛒 Masuk Kasir (${modeUsaha})</button>`;
@@ -54,7 +51,6 @@ function renderMenuDinamis(modeUsaha, fiturProduk, fiturLaporan) {
     containerMenu.innerHTML = html;
 }
 
-// FUNGSI: BUKA HALAMAN KUSTOM
 function bukaHalamanKustom(index) {
     const menu = menuKustom[index];
     document.getElementById('layarUtama').style.display = 'none';
@@ -66,7 +62,6 @@ function bukaHalamanKustom(index) {
     document.getElementById('isiLayarKustom').innerHTML = `<p style="text-align:center; color:#ccc;">Ini halaman: <strong>${menu.nama}</strong></p><p>Silakan isi konten untuk halaman ini di dalam file index.html bagian id="isiLayarKustom"</p>`;
 }
 
-// Sistem Navigasi Single Page Dinamis
 function bukaFitur(namaFitur) {
     document.getElementById('layarUtama').style.display = 'none';
     document.getElementById('layarKasir').style.display = 'none';
@@ -79,7 +74,6 @@ function bukaFitur(namaFitur) {
     else if (namaFitur === 'laporan') { document.getElementById('layarLaporan').style.display = 'block'; renderLaporanPenjualan(); }
 }
 
-// FUNGSI: AUTO HIDE/SHOW STOK BERDASARKAN MODE
 function cekModeStok() {
     const modeUsaha = localStorage.getItem('modeUsaha') || "Retail";
     const inputStok = document.getElementById('prodStok');
@@ -89,9 +83,7 @@ function cekModeStok() {
     }
 }
 
-// ==================== ENGINE KELOLA PRODUK & JASA ====================
 function ambilDataProduk() { return JSON.parse(localStorage.getItem('databaseProduk')) || []; }
-
 function simpanProduk() {
     const nama = document.getElementById('prodNama').value.trim();
     const harga = parseFloat(document.getElementById('prodHarga').value) || 0;
@@ -107,16 +99,7 @@ function simpanProduk() {
     renderTabelProduk();
     alert("Produk/Jasa berhasil ditambahkan!");
 }
-
-function hapusProduk(id) { 
-    if (confirm("Hapus item ini?")) { 
-        let database = ambilDataProduk(); 
-        database = database.filter(item => item.id !== id); 
-        localStorage.setItem('databaseProduk', JSON.stringify(database)); 
-        renderTabelProduk(); 
-    } 
-}
-
+function hapusProduk(id) { if (confirm("Hapus item ini?")) { let database = ambilDataProduk(); database = database.filter(item => item.id !== id); localStorage.setItem('databaseProduk', JSON.stringify(database)); renderTabelProduk(); }
 function renderTabelProduk() {
     const database = getProdukByMode();
     const tbody = document.getElementById('tabelProdukBody');
@@ -126,7 +109,6 @@ function renderTabelProduk() {
     database.forEach((item, index) => { tbody.innerHTML += `<tr><td>${index + 1}</td><td><strong>${item.nama}</strong> <small style="color:#17b7be;">[${item.tipe}]</small></td><td>Rp ${item.harga.toLocaleString('id-ID')}</td><td>${item.stok}</td><td><button onclick="hapusProduk(${item.id})" style="background:#dc3545; color:white; border:none; border-radius:4px; padding:4px 8px; cursor:pointer;">X</button></td></tr>`; });
 }
 
-// ==================== ENGINE MESIN KASIR ====================
 function renderPilihanProdukKasir() {
     const database = getProdukByMode();
     const select = document.getElementById('kasirPilihProduk');
@@ -164,13 +146,7 @@ function prosesTransaksi() {
     const modeUsaha = localStorage.getItem('modeUsaha') || "Retail";
     let databaseProduk = ambilDataProduk();
     let totalBelanja = 0;
-    if (modeUsaha === "Retail") { 
-        for (let item of keranjangBelanja) { 
-            let prod = databaseProduk.find(p => p.id === item.id); 
-            if (prod && prod.stok !== "-") { prod.stok -= item.qty; } 
-        } 
-        localStorage.setItem('databaseProduk', JSON.stringify(databaseProduk)); 
-    }
+    if (modeUsaha === "Retail") { for (let item of keranjangBelanja) { let prod = databaseProduk.find(p => p.id === item.id); if (prod && prod.stok !== "-") { prod.stok -= item.qty; } } localStorage.setItem('databaseProduk', JSON.stringify(databaseProduk)); }
     keranjangBelanja.forEach(item => totalBelanja += (item.harga * item.qty));
     const waktuSekarang = new Date().toLocaleString('id-ID');
     let laporan = JSON.parse(localStorage.getItem('databaseLaporan')) || [];
@@ -186,15 +162,8 @@ function prosesTransaksi() {
     alert("Transaksi Sukses! Nota struk belanja telah dibuat di bawah.");
 }
 
-function aksiCetakStruk() { 
-    window.print(); 
-    keranjangBelanja = []; 
-    renderKeranjang(); 
-    document.getElementById('areaStruk').style.display = 'none'; 
-    bukaFitur('dashboard'); 
-}
+function aksiCetakStruk() { window.print(); keranjangBelanja = []; renderKeranjang(); document.getElementById('areaStruk').style.display = 'none'; bukaFitur('dashboard'); }
 
-// ==================== ENGINE LAPORAN PENJUALAN ====================
 function renderLaporanPenjualan() {
     const laporan = JSON.parse(localStorage.getItem('databaseLaporan')) || [];
     const divLaporan = document.getElementById('isiLaporan');
@@ -210,24 +179,43 @@ function renderLaporanPenjualan() {
     document.getElementById('grandTotalLaporan').innerText = `Rp ${grandTotal.toLocaleString('id-ID')}`;
 }
 
-function hapusSemuaData() { 
-    if (confirm("⚠️ PERINGATAN: Ini akan menghapus seluruh data produk dan riwayat laporan toko Anda. Lanjutkan?")) { 
-        localStorage.removeItem('databaseProduk'); 
-        localStorage.removeItem('databaseLaporan'); 
-        alert("Semua data berhasil dibersihkan!"); 
-        window.location.reload(); 
-    } 
-}
+function hapusSemuaData() { if (confirm("⚠️ PERINGATAN: Ini akan menghapus seluruh data produk dan riwayat laporan toko Anda. Lanjutkan?")) { localStorage.removeItem('databaseProduk'); localStorage.removeItem('databaseLaporan'); alert("Semua data berhasil dibersihkan!"); window.location.reload(); }
 
-// FUNGSI: TAMBAH HALAMAN KUSTOM
+// FUNGSI BARU: TAMBAH + HAPUS + DAFTAR HALAMAN KUSTOM
 function tambahHalamanKustom() {
     const nama = document.getElementById('namaHalamanBaru').value.trim();
     const icon = document.getElementById('iconHalamanBaru').value.trim() || "📄";
     if(!nama) { alert("Nama halaman wajib diisi"); return; }
-    if(menuKustom.length >= 5) { alert("Maksimal 5 halaman kustom"); return; }
+    if(menuKustom.length >= MAX_HALAMAN_KUSTOM) { alert(`Maksimal ${MAX_HALAMAN_KUSTOM} halaman kustom. Hapus dulu untuk menambah baru.`); return; }
     menuKustom.push({nama: nama, icon: icon});
     localStorage.setItem('menuKustom', JSON.stringify(menuKustom));
     alert(`Halaman ${nama} berhasil ditambahkan!`);
     document.getElementById('namaHalamanBaru').value = "";
     document.getElementById('iconHalamanBaru').value = "";
+    renderDaftarHalamanKustom();
+}
+
+function hapusHalamanKustom(index) {
+    if(confirm(`Hapus halaman "${menuKustom[index].nama}"?`)){
+        menuKustom.splice(index, 1);
+        localStorage.setItem('menuKustom', JSON.stringify(menuKustom));
+        renderDaftarHalamanKustom();
+    }
+}
+
+function renderDaftarHalamanKustom() {
+    const container = document.getElementById('daftarHalamanKustom');
+    if(!container) return;
+    if(menuKustom.length === 0){
+        container.innerHTML = `<p style="font-size:12px; color:#ccc;">Belum ada halaman kustom</p>`;
+        return;
+    }
+    let html = '';
+    menuKustom.forEach((menu, index) => {
+        html += `<div style="display:flex; justify-content:space-between; align-items:center; background:#3a0000; padding:8px 12px; border-radius:6px; margin-bottom:8px;">
+                    <span>${menu.icon} ${menu.nama}</span>
+                    <button onclick="hapusHalamanKustom(${index})" style="background:#dc3545; color:white; border:none; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:12px;">Hapus</button>
+                 </div>`;
+    });
+    container.innerHTML = html;
 }
