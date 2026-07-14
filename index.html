@@ -6,8 +6,8 @@
  <title>NUSAPOS - Dashboard</title>
  <style>
    :root {
-     --merah-utama: #C62828;
-     --merah-gelap: #B71C1C;
+     --merah-utama: #8B0000; /* Merah Maroon Gelap */
+     --merah-gelap: #5A0000; /* Merah Lebih Gelap untuk Card */
      --tosca: #17b7be;
      --teal: #00796B;
      --putih: #ffffff;
@@ -17,22 +17,22 @@
    .logo-box { text-align: center; margin-bottom: 30px; }
    .logo-box img { width: 85px; height: auto; margin-bottom: 10px; background: var(--putih); padding: 10px; border-radius: 12px; }
    h1 { font-size: 26px; margin: 5px 0; letter-spacing: 1px; text-align: center; }
-   .tagline { color: var(--tosca); font-size: 13px; margin-bottom: 25px; text-align: center; font-weight: bold; }
+   .tagline { color: var(--tosca); font-size: 13px; margin-bottom: 25px; text-align: center; font-weight: bold; text-shadow: 0 0 5px rgba(23,183,190,0.3); }
    .menu-area { display: flex; flex-direction: column; gap: 12px; }
    .btn { width: 100%; padding: 15px; font-size: 15px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-decoration: none; box-sizing: border-box; display: block; text-align: center; }
    .btn-kasir { background-color: var(--putih); color: var(--merah-gelap); border: 2px solid var(--putih); }
-   .btn-aksen { background: linear-gradient(135deg, var(--tosca), var(--teal)); color: var(--putih); }
+   .btn-aksen { background: linear-gradient(135deg, var(--tosca), var(--teal)); color: var(--putih); box-shadow: 0 3px 8px rgba(23,183,190,0.3); }
    .btn-outline { background-color: transparent; color: var(--tosca); border: 2px solid var(--tosca); }
    .btn:active { transform: scale(0.98); }
-   .card-fitur { background-color: var(--merah-gelap); padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-top: 10px; border: 1px solid rgba(23,183,190,0.2); }
+   .card-fitur { background-color: var(--merah-gelap); padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); margin-top: 10px; border: 1px solid rgba(23,183,190,0.25); }
    .card-fitur h3 { color: var(--tosca); margin-top: 0; border-bottom: 1px solid rgba(23,183,190,0.4); padding-bottom: 8px; }
    input, select { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid var(--tosca); background: var(--merah-gelap); color: white; box-sizing: border-box; }
    input:focus, select:focus { outline: 2px solid var(--teal); }
-   input:disabled { background: #5a0f0f; color: #ccc; }
+   input:disabled { background: #3a0000; color: #aaa; }
    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
    th, td { padding: 8px; text-align: left; border-bottom: 1px solid rgba(23,183,190,0.3); }
    th { color: var(--tosca); }
-   .footer-note { text-align: center; margin-top: 35px; font-size: 11px; color: rgba(255,255,255,0.6); }
+   .footer-note { text-align: center; margin-top: 35px; font-size: 11px; color: rgba(255,255,255,0.5); }
    @media print { body * { visibility: hidden; background: white !important; color: black !important; } #areaStruk, #areaStruk * { visibility: visible; } #areaStruk { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; padding: 0; } #areaStruk button { display: none; }
  </style>
 </head>
