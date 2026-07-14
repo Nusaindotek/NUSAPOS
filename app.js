@@ -27,7 +27,7 @@ function getProdukByMode() {
 document.addEventListener("DOMContentLoaded", function() {
     const namaTokoElement = document.getElementById('displayNamaToko');
     if (namaTokoElement) {
-        const namaToko = localStorage.getItem('namaToko') || "NUSAPOS Universal";
+        const namaToko = localStorage.getItem('namaToko') || "Belum diset";
         const modeUsaha = localStorage.getItem('modeUsaha') || "Retail";
         const fiturProduk = localStorage.getItem('fiturProduk')!== "false";
         const fiturLaporan = localStorage.getItem('fiturLaporan')!== "false";
@@ -38,7 +38,14 @@ document.addEventListener("DOMContentLoaded", function() {
         renderTabelProduk();
         renderLaporanPenjualan();
         cekModeStok();
-        if(document.getElementById('daftarHalamanKustom')) renderDaftarHalamanKustom();
+    }
+
+    if(document.getElementById('namaToko')){
+        document.getElementById('namaToko').value = localStorage.getItem('namaToko') || "";
+        document.getElementById('modeUsaha').value = localStorage.getItem('modeUsaha') || "Retail";
+        document.getElementById('menuProduk').checked = localStorage.getItem('fiturProduk')!== "false";
+        document.getElementById('menuLaporan').checked = localStorage.getItem('fiturLaporan')!== "false";
+        renderDaftarHalamanKustom();
     }
 });
 
@@ -52,25 +59,21 @@ function renderMenuDinamis(modeUsaha, fiturProduk, fiturLaporan) {
     containerMenu.innerHTML = html;
 }
 
-// HALAMAN KUSTOM BISA ISI DATA + TABEL
 function bukaHalamanKustom(index) {
     const menu = menuKustom[index];
     const key = `data_${index}`;
     if(!dataKustom[key]) dataKustom[key] = [];
-
     document.getElementById('layarUtama').style.display = 'none';
     document.getElementById('layarKasir').style.display = 'none';
     document.getElementById('layarProduk').style.display = 'none';
     document.getElementById('layarLaporan').style.display = 'none';
     document.getElementById('layarKustom').style.display = 'block';
     document.getElementById('judulLayarKustom').innerText = `${menu.icon} ${menu.nama}`;
-
     document.getElementById('formKustom').innerHTML = `
         <input type="text" id="kustomNama" placeholder="Nama">
         <input type="text" id="kustomKet" placeholder="Keterangan / Nominal">
         <button class="btn btn-aksen" onclick="simpanDataKustom(${index})">+ Simpan Data</button>
     `;
-
     document.getElementById('theadKustom').innerHTML = `<tr><th>No</th><th>Nama</th><th>Keterangan</th><th>Aksi</th></tr>`;
     renderTabelKustom(index);
 }
@@ -190,7 +193,6 @@ function tambahKeKeranjang() {
     }
 }
 
-// FITUR + - KERANJANG
 function ubahQty(id, aksi) {
     const item = keranjangBelanja.find(i => i.id === id);
     const database = ambilDataProduk();
@@ -279,10 +281,8 @@ function renderLaporanPenjualan() {
 }
 
 function hapusSemuaData() {
-    if (confirm("⚠️ PERINGATAN: Ini akan menghapus seluruh data produk dan riwayat laporan toko Anda. Lanjutkan?")) {
-        localStorage.removeItem('databaseProduk');
-        localStorage.removeItem('databaseLaporan');
-        localStorage.removeItem('dataKustom');
+    if (confirm("⚠️ PERINGATAN: Ini akan menghapus seluruh data toko Anda. Lanjutkan?")) {
+        localStorage.clear();
         alert("Semua data berhasil dibersihkan!");
         window.location.reload();
     }
