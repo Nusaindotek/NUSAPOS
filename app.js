@@ -59,7 +59,7 @@ function bukaHalamanKustom(index) {
     document.getElementById('layarLaporan').style.display = 'none';
     document.getElementById('layarKustom').style.display = 'block';
     document.getElementById('judulLayarKustom').innerText = `${menu.icon} ${menu.nama}`;
-    document.getElementById('isiLayarKustom').innerHTML = `<div style="text-align:center; padding:20px;"><h4>📄 ${menu.nama}</h4><p style="color:#ccc; font-size:14px;">Halaman ini masih kosong.</p></div>`;
+    document.getElementById('isiLayarKustom').innerHTML = `<div style="text-align:center; padding:20px;"><h4>📄 ${menu.nama}</h4><p style="color:#ccc; font-size:14px;">Halaman ini masih kosong. Silakan isi oleh Owner.</p></div>`;
 }
 
 function bukaFitur(namaFitur) {
