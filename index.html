@@ -4,6 +4,15 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>NUSAPOS - Dashboard</title>
+ 
+ <!-- PWA TAGS -->
+ <link rel="manifest" href="manifest.json">
+ <meta name="theme-color" content="#8B0000">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="NUSAPOS">
+ <link rel="apple-touch-icon" href="icon-192.png">
+
  <style>
    :root { --merah-utama: #8B0000; --merah-gelap: #5A0000; --tosca: #17b7be; --teal: #00796B; --putih: #ffffff; }
    body { background-color: var(--merah-utama); color: var(--putih); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
@@ -92,8 +101,21 @@
     <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="margin-top:20px; padding:8px;">⬅️ Kembali ke Menu</button>
   </div>
 
-  <div class="footer-note">NUSAPOS v1.0 BETA Web Version</div>
+  <div class="footer-note">NUSAPOS v1.1 PWA Version</div>
 </div>
+
 <script src="app.js"></script>
+
+<!-- DAFTARKAN SERVICE WORKER -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+    .then(reg => console.log('SW Registered: ', reg))
+    .catch(err => console.log('SW Error: ', err));
+  });
+}
+</script>
+
 </body>
 </html>
