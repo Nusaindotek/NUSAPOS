@@ -11,6 +11,7 @@
   .logo-box { text-align: center; margin-bottom: 30px; }
   .logo-box img { width: 85px; height: auto; margin-bottom: 10px; background: var(--putih); padding: 10px; border-radius: 12px; }
    h1 { font-size: 26px; margin: 5px 0; letter-spacing: 1px; text-align: center; }
+  .nama-toko-owner { font-size: 16px; color: var(--putih); margin: 0; font-weight: bold; }
   .tagline { color: var(--tosca); font-size: 13px; margin-bottom: 25px; text-align: center; font-weight: bold; text-shadow: 0 0 5px rgba(23,183,190,0.3); }
   .menu-area { display: flex; flex-direction: column; gap: 12px; }
   .btn { width: 100%; padding: 15px; font-size: 15px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-decoration: none; box-sizing: border-box; display: block; text-align: center; }
@@ -35,7 +36,12 @@
 <body>
 <div class="app-container">
   <div id="layarUtama">
-     <div class="logo-box"><img src="icon.png" alt="Logo NUSAPOS"><h1 id="displayNamaToko">NUSAPOS</h1><div class="tagline" id="displayModeUsaha">Aplikasi POS Universal</div></div>
+     <div class="logo-box">
+        <img src="icon.png" alt="Logo NUSAPOS">
+        <h1>NUSAPOS</h1>
+        <p class="nama-toko-owner" id="displayNamaToko">Nama Toko</p>
+        <div class="tagline" id="displayModeUsaha">Aplikasi POS Universal</div>
+     </div>
      <div class="menu-area" id="menuDinamis"><p style="text-align:center; color: #ccc;">Memuat konfigurasi aplikasi...</p></div>
   </div>
 
