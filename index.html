@@ -5,27 +5,35 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>NUSAPOS - Dashboard</title>
  <style>
-   body { background-color: #0f2d59; color: #ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+   :root {
+     --merah-utama: #C62828;
+     --merah-gelap: #B71C1C;
+     --tosca: #17b7be;
+     --teal: #00796B;
+     --putih: #ffffff;
+   }
+   body { background-color: var(--merah-utama); color: var(--putih); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
    .app-container { width: 100%; max-width: 450px; padding: 25px 20px; box-sizing: border-box; }
    .logo-box { text-align: center; margin-bottom: 30px; }
-   .logo-box img { width: 85px; height: auto; margin-bottom: 10px; }
+   .logo-box img { width: 85px; height: auto; margin-bottom: 10px; background: var(--putih); padding: 10px; border-radius: 12px; }
    h1 { font-size: 26px; margin: 5px 0; letter-spacing: 1px; text-align: center; }
-   .tagline { color: #17b7be; font-size: 13px; margin-bottom: 25px; text-align: center; }
+   .tagline { color: var(--tosca); font-size: 13px; margin-bottom: 25px; text-align: center; font-weight: bold; }
    .menu-area { display: flex; flex-direction: column; gap: 12px; }
    .btn { width: 100%; padding: 15px; font-size: 15px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; text-decoration: none; box-sizing: border-box; display: block; text-align: center; }
-   .btn-kasir { background-color: #ffffff; color: #0f2d59; border: 2px solid #ffffff; }
-   .btn-aksen { background-color: #17b7be; color: #0f2d59; }
-   .btn-outline { background-color: transparent; color: #17b7be; border: 2px solid #17b7be; }
+   .btn-kasir { background-color: var(--putih); color: var(--merah-gelap); border: 2px solid var(--putih); }
+   .btn-aksen { background: linear-gradient(135deg, var(--tosca), var(--teal)); color: var(--putih); }
+   .btn-outline { background-color: transparent; color: var(--tosca); border: 2px solid var(--tosca); }
    .btn:active { transform: scale(0.98); }
-   .card-fitur { background-color: #163e75; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-top: 10px; }
-   .card-fitur h3 { color: #17b7be; margin-top: 0; border-bottom: 1px solid rgba(23,183,190,0.3); padding-bottom: 8px; }
-   input, select { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #17b7be; background: #0f2d59; color: white; box-sizing: border-box; }
-   input:disabled { background: #081a33; color: #7292bf; }
+   .card-fitur { background-color: var(--merah-gelap); padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-top: 10px; border: 1px solid rgba(23,183,190,0.2); }
+   .card-fitur h3 { color: var(--tosca); margin-top: 0; border-bottom: 1px solid rgba(23,183,190,0.4); padding-bottom: 8px; }
+   input, select { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid var(--tosca); background: var(--merah-gelap); color: white; box-sizing: border-box; }
+   input:focus, select:focus { outline: 2px solid var(--teal); }
+   input:disabled { background: #5a0f0f; color: #ccc; }
    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-   th, td { padding: 8px; text-align: left; border-bottom: 1px solid #7292bf; }
-   th { color: #17b7be; }
-   .footer-note { text-align: center; margin-top: 35px; font-size: 11px; color: #7292bf; }
-   @media print { body * { visibility: hidden; background: white !important; color: black !important; } #areaStruk, #areaStruk * { visibility: visible; } #areaStruk { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; padding: 0; } #areaStruk button { display: none; } }
+   th, td { padding: 8px; text-align: left; border-bottom: 1px solid rgba(23,183,190,0.3); }
+   th { color: var(--tosca); }
+   .footer-note { text-align: center; margin-top: 35px; font-size: 11px; color: rgba(255,255,255,0.6); }
+   @media print { body * { visibility: hidden; background: white !important; color: black !important; } #areaStruk, #areaStruk * { visibility: visible; } #areaStruk { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; padding: 0; } #areaStruk button { display: none; }
  </style>
 </head>
 <body>
@@ -37,7 +45,7 @@
        <div class="tagline" id="displayModeUsaha">Aplikasi POS Universal</div>
      </div>
      <div class="menu-area" id="menuDinamis">
-       <p style="text-align:center; color: #7292bf;">Memuat konfigurasi aplikasi...</p>
+       <p style="text-align:center; color: #ccc;">Memuat konfigurasi aplikasi...</p>
      </div>
   </div>
 
@@ -45,16 +53,16 @@
      <h3>🛒 Mesin Kasir Digital</h3>
      <label>Pilih Barang / Jasa Dagangan:</label>
      <select id="kasirPilihProduk" onchange="tambahKeKeranjang()"></select>
-     <h4 style="margin: 15px 0 5px; color:#17b7be;">Daftar Keranjang:</h4>
-     <table style="margin-bottom: 20px;"><thead><tr><th style="color:#17b7be;">Item</th><th style="text-align:right; color:#17b7be;">Subtotal</th></tr></thead><tbody id="keranjangBody"></tbody></table>
-     <div style="display:flex; justify-content:space-between; font-weight:bold; background:#0f2d59; padding:10px; border-radius:6px; margin-bottom:15px;"><span>TOTAL:</span><span id="kasirTotalBelanja" style="color:#17b7be;">Rp 0</span></div>
+     <h4 style="margin: 15px 0 5px; color:var(--tosca);">Daftar Keranjang:</h4>
+     <table style="margin-bottom: 20px;"><thead><tr><th style="color:var(--tosca);">Item</th><th style="text-align:right; color:var(--tosca);">Subtotal</th></tr></thead><tbody id="keranjangBody"></tbody></table>
+     <div style="display:flex; justify-content:space-between; font-weight:bold; background:var(--merah-gelap); padding:10px; border-radius:6px; margin-bottom:15px; border:1px solid var(--tosca);"><span>TOTAL:</span><span id="kasirTotalBelanja" style="color:var(--tosca);">Rp 0</span></div>
      <button class="btn btn-aksen" onclick="prosesTransaksi()">Bayar & Simpan Struk</button>
      <div id="areaStruk" style="display: none; background: white; color: black; padding: 15px; margin-top: 20px; border-radius: 8px; font-family: monospace;">
         <div style="text-align: center; border-bottom: 1px dashed black; padding-bottom: 10px;"><h4 id="strukNamaToko" style="margin: 0; font-size: 16px; color: black;">Nama Toko</h4><small id="strukWaktu" style="color: black;">Tanggal</small></div>
         <table style="width: 100%; color: black; margin-top: 10px;" id="strukTabelItem"></table>
         <div style="border-top: 1px dashed black; margin-top: 10px; padding-top: 5px; text-align: right; font-weight: bold; color: black;">TOTAL: <span id="strukTotal" style="color: black;">Rp 0</span></div>
         <div style="text-align: center; margin-top: 15px; font-size: 11px; color: black;">Thank You / Terima Kasih</div>
-        <button class="btn btn-aksen" onclick="aksiCetakStruk()" style="margin-top: 15px; background: #17b7be; color: white;">🖨️ Cetak / Simpan PDF</button>
+        <button class="btn btn-aksen" onclick="aksiCetakStruk()" style="margin-top: 15px;">🖨️ Cetak / Simpan PDF</button>
      </div>
      <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="margin-top:15px; padding:8px;">⬅️ Kembali ke Menu</button>
   </div>
@@ -64,21 +72,30 @@
      <form id="formProduk">
         <input type="text" id="prodNama" placeholder="Nama Barang / Jenis Jasa">
         <input type="number" id="prodHarga" placeholder="Harga Jual (Rp)">
-        <label for="prodStok" style="font-size:12px; color:#17b7be;">Stok</label>
+        <label for="prodStok" style="font-size:12px; color:var(--tosca);">Stok</label>
         <input type="number" id="prodStok" placeholder="Jumlah Stok Fisik">
         <button type="button" class="btn btn-aksen" onclick="simpanProduk()" style="padding:10px;">+ Tambah Item</button>
      </form>
-     <table id="tabelProduk"><thead><tr><th style="color:#17b7be;">No</th><th style="color:#17b7be;">Nama</th><th style="color:#17b7be;">Harga</th><th style="color:#17b7be;">Stok</th><th style="color:#17b7be;">Aksi</th></tr></thead><tbody id="tabelProdukBody"></tbody></table>
+     <table id="tabelProduk"><thead><tr><th style="color:var(--tosca);">No</th><th style="color:var(--tosca);">Nama</th><th style="color:var(--tosca);">Harga</th><th style="color:var(--tosca);">Stok</th><th style="color:var(--tosca);">Aksi</th></tr></thead><tbody id="tabelProdukBody"></tbody></table>
      <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="margin-top:20px; padding:8px;">⬅️ Kembali ke Menu</button>
   </div>
 
   <div id="layarLaporan" style="display: none;" class="card-fitur">
      <h3>📊 Laporan Grafik & Omset</h3>
-     <div style="background:#0f2d59; padding:15px; border-radius:8px; text-align:center; margin-bottom:20px;"><span style="font-size:13px; color:#7292bf;">Total Omset Pendapatan</span><br><span id="grandTotalLaporan" style="font-size:24px; font-weight:bold; color:#17b7be;">Rp 0</span></div>
+     <div style="background:var(--merah-gelap); padding:15px; border-radius:8px; text-align:center; margin-bottom:20px; border:1px solid var(--tosca);"><span style="font-size:13px; color:#ccc;">Total Omset Pendapatan</span><br><span id="grandTotalLaporan" style="font-size:24px; font-weight:bold; color:var(--tosca);">Rp 0</span></div>
      <h4 style="margin-bottom: 10px;">Riwayat Struk Terbuku:</h4>
      <div id="isiLaporan" style="max-height: 250px; overflow-y: auto; margin-bottom:20px;"></div>
      <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="padding:8px;">⬅️ Kembali ke Menu</button>
-     <button onclick="hapusSemuaData()" style="width:100%; background:transparent; border:none; color:#dc3545; font-size:11px; margin-top:15px; cursor:pointer; font-weight:bold;">⚠️ RESET ALL DATA TOKO</button>
+     <button onclick="hapusSemuaData()" style="width:100%; background:transparent; border:none; color:#ff5252; font-size:11px; margin-top:15px; cursor:pointer; font-weight:bold;">⚠️ RESET ALL DATA TOKO</button>
+  </div>
+
+  <div id="layarKustom" style="display: none;" class="card-fitur">
+     <h3 id="judulLayarKustom">📄 Halaman Kustom</h3>
+     <div id="isiLayarKustom">
+        <p style="text-align:center; color:#ccc;">Konten halaman ini bisa kamu isi nanti dari kode.</p>
+        <p style="font-size:12px;">Contoh: Form input bon, daftar hutang, antrian, dll</p>
+     </div>
+     <button class="btn btn-outline" onclick="bukaFitur('dashboard')" style="margin-top:20px; padding:8px;">⬅️ Kembali ke Menu</button>
   </div>
 
   <div class="footer-note">NUSAPOS v1.0 BETA Web Version</div>
