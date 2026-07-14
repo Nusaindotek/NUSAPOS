@@ -16,6 +16,7 @@
     .checkbox-item:last-child { margin-bottom: 0; }
     .checkbox-item input { margin-right: 10px; transform: scale(1.2); }
     .btn-simpan { background-color: #17b7be; color: #0f2d59; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; }
+    .btn-kembali { background-color: transparent; color: #17b7be; border: 2px solid #17b7be; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px; text-decoration: none; display: block; text-align: center; box-sizing: border-box; }
     .info-box { font-size: 12px; color: #a2c1eb; border-left: 4px solid #17b7be; padding-left: 12px; line-height: 1.5; }
   </style>
 </head>
@@ -46,14 +47,17 @@
       <button type="button" onclick="tambahHalamanKustom()" style="background:#17b7be; color:#0f2d59; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px;">+ Tambah Halaman</button>
       
       <button type="button" class="btn-simpan" onclick="simpanSetting()">Simpan & Terapkan</button>
+      
+      <!-- TOMBOL BARU: KEMBALI KE DASHBOARD -->
+      <a href="index.html" class="btn-kembali">⬅️ Kembali ke Dashboard</a>
     </form>
   </div>
   <div class="card info-box">
     <strong>ℹ️ Spesifikasi Minimum Perangkat Owner:</strong><br>
-    • RAM: Minimal 2 GB (Disarankan)<br>
-    • Browser: Google Chrome, Safari, atau Opera versi terbaru.<br>
-    • Fitur Browser: Wajib mendukung JavaScript & Penyimpanan Lokal (LocalStorage aktif).<br>
-    • Penyimpanan Bebas: Minimal 50 MB ruang kosong memori internal browser.
+    - RAM: Minimal 2 GB (Disarankan)<br>
+    - Browser: Google Chrome, Safari, atau Opera versi terbaru.<br>
+    - Fitur Browser: Wajib mendukung JavaScript & Penyimpanan Lokal (LocalStorage aktif).<br>
+    - Penyimpanan Bebas: Minimal 50 MB ruang kosong memori internal browser.
   </div>
 </div>
 <script src="app.js"></script>
