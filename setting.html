@@ -9,10 +9,9 @@
     body { background-color: var(--merah-utama); color: var(--putih); font-family: 'Segoe UI', sans-serif; padding: 20px; margin: 0; }
     .container { max-width: 450px; margin: 0 auto; }
     .card { background-color: var(--merah-gelap); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); border: 1px solid rgba(23,183,190,0.25); }
-    h2 { color: var(--tosca); margin-top: 0; font-size: 20px; text-shadow: 0 0 5px rgba(23,183,190,0.3); }
+    h2 { color: var(--tosca); margin-top: 0; font-size: 20px; }
     label { display: block; margin: 15px 0 5px; font-weight: bold; font-size: 14px; }
     input[type="text"], select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--tosca); background: var(--merah-gelap); color: white; box-sizing: border-box; font-size: 14px; }
-    input:focus, select:focus { outline: 2px solid var(--teal); }
     .checkbox-group { background: var(--merah-gelap); padding: 15px; border-radius: 8px; margin-top: 10px; border: 1px solid rgba(23,183,190,0.25); }
     .checkbox-item { display: flex; align-items: center; margin-bottom: 12px; }
     .btn-simpan { background: linear-gradient(135deg, var(--tosca), var(--teal)); color: var(--putih); border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; }
@@ -41,7 +40,7 @@
         <div class="checkbox-item"><input type="checkbox" checked disabled><span>4. Pengaturan</span></div>
       </div>
 
-      <label>Tambah Halaman Kustom (Max 2)</label>
+      <label>Tambah Halaman Kustom (Sisa: <span id="sisaSlot">2</span>)</label>
       <input type="text" id="namaHalamanBaru" placeholder="Contoh: Antrian / Booking">
       <input type="text" id="iconHalamanBaru" placeholder="Contoh: 📋">
       <button type="button" onclick="tambahHalamanKustom()" style="background:linear-gradient(135deg, var(--tosca), var(--teal)); color:var(--putih); border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px;">+ Tambah Halaman</button>
