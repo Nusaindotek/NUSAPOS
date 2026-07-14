@@ -7,17 +7,17 @@
   <style>
     :root { --merah-utama: #8B0000; --merah-gelap: #5A0000; --tosca: #17b7be; --teal: #00796B; --putih: #ffffff; }
     body { background-color: var(--merah-utama); color: var(--putih); font-family: 'Segoe UI', sans-serif; padding: 20px; margin: 0; }
-    .container { max-width: 450px; margin: 0 auto; }
-    .card { background-color: var(--merah-gelap); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); border: 1px solid rgba(23,183,190,0.25); }
+   .container { max-width: 450px; margin: 0 auto; }
+   .card { background-color: var(--merah-gelap); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); border: 1px solid rgba(23,183,190,0.25); }
     h2 { color: var(--tosca); margin-top: 0; font-size: 20px; }
     label { display: block; margin: 15px 0 5px; font-weight: bold; font-size: 14px; }
     input[type="text"], select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--tosca); background: var(--merah-gelap); color: white; box-sizing: border-box; font-size: 14px; }
-    .checkbox-group { background: var(--merah-gelap); padding: 15px; border-radius: 8px; margin-top: 10px; border: 1px solid rgba(23,183,190,0.25); }
-    .checkbox-item { display: flex; align-items: center; margin-bottom: 12px; gap: 8px; }
-    .btn-simpan { background: linear-gradient(135deg, var(--tosca), var(--teal)); color: var(--putih); border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; }
-    .btn-reset { background: #dc3545; color: var(--putih); border: none; padding: 10px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 10px; }
-    .btn-kembali { background-color: transparent; color: var(--tosca); border: 2px solid var(--tosca); padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px; text-decoration: none; display: block; text-align: center; }
-    .info-box { font-size: 12px; color: #ccc; border-left: 4px solid var(--tosca); padding-left: 12px; line-height: 1.5; }
+   .checkbox-group { background: var(--merah-gelap); padding: 15px; border-radius: 8px; margin-top: 10px; border: 1px solid rgba(23,183,190,0.25); }
+   .checkbox-item { display: flex; align-items: center; margin-bottom: 12px; gap: 8px; }
+   .btn-simpan { background: linear-gradient(135deg, var(--tosca), var(--teal)); color: var(--putih); border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; }
+   .btn-reset { background: #dc3545; color: var(--putih); border: none; padding: 10px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; margin-top: 10px; }
+   .btn-kembali { background-color: transparent; color: var(--tosca); border: 2px solid var(--tosca); padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px; text-decoration: none; display: block; text-align: center; }
+   .info-box { font-size: 12px; color: #ccc; border-left: 4px solid var(--tosca); padding-left: 12px; line-height: 1.5; }
   </style>
 </head>
 <body>
@@ -32,7 +32,7 @@
         <option value="Retail">Mode Retail (Toko/Minimarket/Stok)</option>
         <option value="Jasa">Mode Jasa (Bengkel/Salon/Laundry)</option>
       </select>
-      
+
       <label>Halaman Wajib Aktif</label>
       <div class="checkbox-group">
         <div class="checkbox-item"><input type="checkbox" checked disabled><span>1. Kasir</span></div>
@@ -45,7 +45,7 @@
       <input type="text" id="namaHalamanBaru" placeholder="Contoh: Bon / Karyawan">
       <input type="text" id="iconHalamanBaru" placeholder="Contoh: 📝">
       <button type="button" onclick="tambahHalamanKustom()" style="background:linear-gradient(135deg, var(--tosca), var(--teal)); color:var(--putih); border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px;">+ Tambah Halaman</button>
-      
+
       <label style="margin-top:20px;">Daftar Halaman Kustom</label>
       <div id="daftarHalamanKustom" style="margin-bottom:10px;"></div>
       <button type="button" class="btn-reset" onclick="resetHalamanKustom()">🗑️ Reset Semua Halaman Kustom</button>
