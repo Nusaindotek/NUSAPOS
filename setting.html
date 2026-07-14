@@ -5,72 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NUSAPOS - Pengaturan</title>
   <style>
-    body {
-      background-color: #0f2d59;
-      color: #ffffff;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 20px;
-      margin: 0;
-    }
-    .container {
-      max-width: 450px;
-      margin: 0 auto;
-    }
-    .card {
-      background-color: #153460;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
+    body { background-color: #0f2d59; color: #ffffff; font-family: 'Segoe UI', sans-serif; padding: 20px; margin: 0; }
+    .container { max-width: 450px; margin: 0 auto; }
+    .card { background-color: #153460; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     h2 { color: #17b7be; margin-top: 0; font-size: 20px; }
     label { display: block; margin: 15px 0 5px; font-weight: bold; font-size: 14px; }
-    input[type="text"], select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #17b7be;
-      background: #0f2d59;
-      color: white;
-      box-sizing: border-box;
-      font-size: 14px;
-    }
-    .checkbox-group {
-      background: #0f2d59;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 10px;
-    }
-    .checkbox-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
-    }
+    input[type="text"], select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #17b7be; background: #0f2d59; color: white; box-sizing: border-box; font-size: 14px; }
+    .checkbox-group { background: #0f2d59; padding: 15px; border-radius: 8px; margin-top: 10px; }
+    .checkbox-item { display: flex; align-items: center; margin-bottom: 12px; }
     .checkbox-item:last-child { margin-bottom: 0; }
     .checkbox-item input { margin-right: 10px; transform: scale(1.2); }
-    .btn-simpan {
-      background-color: #17b7be;
-      color: #0f2d59;
-      border: none;
-      padding: 14px;
-      width: 100%;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    .info-box {
-      font-size: 12px;
-      color: #a2c1eb;
-      border-left: 4px solid #17b7be;
-      padding-left: 12px;
-      line-height: 1.5;
-    }
+    .btn-simpan { background-color: #17b7be; color: #0f2d59; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; }
+    .info-box { font-size: 12px; color: #a2c1eb; border-left: 4px solid #17b7be; padding-left: 12px; line-height: 1.5; }
   </style>
 </head>
 <body>
-
 <div class="container">
   <div class="card">
     <h2>⚙️ Pengaturan Konten Kontrol</h2>
@@ -86,25 +35,19 @@
       
       <label>Aktifkan Halaman Terkontrol (Maksimal 5)</label>
       <div class="checkbox-group">
-        <div class="checkbox-item">
-          <input type="checkbox" id="menuKasir" checked disabled>
-          <span>1. Halaman Utama & Kasir (Wajib)</span>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="menuProduk" checked>
-          <span>2. Halaman Input Produk & Jasa</span>
-        </div>
-        <div class="checkbox-item">
-          <input type="checkbox" id="menuLaporan" checked>
-          <span>3. Halaman Laporan Penjualan</span>
-        </div>
+        <div class="checkbox-item"><input type="checkbox" id="menuKasir" checked disabled><span>1. Halaman Utama & Kasir (Wajib)</span></div>
+        <div class="checkbox-item"><input type="checkbox" id="menuProduk" checked><span>2. Halaman Input Produk & Jasa</span></div>
+        <div class="checkbox-item"><input type="checkbox" id="menuLaporan" checked><span>3. Halaman Laporan Penjualan</span></div>
       </div>
+
+      <label>Tambah Halaman Manual (Max 5)</label>
+      <input type="text" id="namaHalamanBaru" placeholder="Contoh: Antrian / Booking">
+      <input type="text" id="iconHalamanBaru" placeholder="Contoh: 📋">
+      <button type="button" onclick="tambahHalamanKustom()" style="background:#17b7be; color:#0f2d59; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px;">+ Tambah Halaman</button>
       
       <button type="button" class="btn-simpan" onclick="simpanSetting()">Simpan & Terapkan</button>
     </form>
   </div>
-
-  <!-- Box Spesifikasi Minimum -->
   <div class="card info-box">
     <strong>ℹ️ Spesifikasi Minimum Perangkat Owner:</strong><br>
     • RAM: Minimal 2 GB (Disarankan)<br>
@@ -113,7 +56,6 @@
     • Penyimpanan Bebas: Minimal 50 MB ruang kosong memori internal browser.
   </div>
 </div>
-
 <script src="app.js"></script>
 </body>
 </html>
